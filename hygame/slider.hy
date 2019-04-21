@@ -24,17 +24,7 @@
 
 (import math threading time)
 
-(try
-  (import gi)
-  (for [tk ["Gtk" "Gdk"]]
-    (gi.require_version tk "3.0"))
-  (import [gi.repository [Gdk Gtk]])
-  (setv HAS_GTK True)
-  (except [ImportError]
-    (setv HAS_GTK False)))
-
-;; Keyval symbols
-(setv Keys {'escape 65307 })
+(import [hygame.widgets [Gdk Gtk Window]])
 
 (defn load-css []
   "Load custom style to make things smaller"
@@ -59,50 +49,25 @@
         [True (.format "{}{:03.4f}" sign value)]))
 
 
-(defclass Sliders [object]
+(defclass Sliders [Window]
   "Collection of sliders"
 
   (defn --init-- [self]
-    (setv self.win (Gtk.Window)
-          self.sliders []
-          self.box (Gtk.Box :orientation Gtk.Orientation.VERTICAL :spacing 0))
-    (load-css)
-    (self.win.connect "destroy" Gtk.main_quit)
-    (self.win.connect "key_press_event"
-                      (fn [win ev]
-                        (when (= ev.keyval (get Keys 'escape))
-                          (.stop self))))
-    (.add self.win self.box))
+    (Window.--init-- self)
+    (setv self.sliders [])
+    (load-css))
 
   (defn add [self sliders]
     (if (not (instance? list sliders))
         (setv sliders [sliders]))
     (for [slider sliders]
       (.append self.sliders slider)
-      (.pack_start self.box slider.box True True 0)))
+      (Window.add self slider.box)))
 
   (defn render [self]
     "Update sliders' position when value changed"
     (for [slider self.sliders]
-      (.update slider)))
-
-  (defn update-loop [self]
-    "Blocking procedure to trigger the Gtk main loop"
-    (print "Starting gtk loop...")
-    (.show_all self.win)
-    (.show_all self.box)
-    (Gtk.main))
-
-  (defn start [self]
-    "Start the Gtk main loop in a thread"
-    (setv self.update-thread (threading.Thread :target self.update-loop))
-    (.start self.update-thread))
-
-  (defn stop [self]
-    "Stop the Gtk main loop and close the window"
-    (Gtk.main_quit)
-    (when (getattr self "update-thread" None)
-      (.join self.update-thread))))
+      (.update slider))))
 
 
 (defclass Slider [object]
