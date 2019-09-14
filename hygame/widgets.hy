@@ -85,6 +85,10 @@
         mid (// y 2))
   (setv mono (/ (numpy.mean buffer :axis 1) (** 2 16)))
 
+  ;; Move to first zero crossing
+  (setv mono
+        (cut mono (get (get (numpy.where (numpy.diff (numpy.sign mono))) 0) 0)))
+
   ;; fill background
   (.set_source_rgb context 0 0 0)
   (.rectangle context 0 0 x y)
