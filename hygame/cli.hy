@@ -16,13 +16,26 @@
 
 ;; This module provides usage for cli
 
-(import argparse)
+(import argparse os)
 
 (defn usage []
   (setv parser (argparse.ArgumentParser))
+  (.add-argument parser "--sound-device")
   (.add-argument parser "--wav" :metavar "FILE")
   (.add-argument parser "--fps" :type int :default 25)
-  (parser.parse_args))
+  (setv args (parser.parse_args))
+  (when (or args.sound_device (get os.environ "SD_DEVICE"))
+    (import sounddevice)
+    (cond [(= "help" args.sound_device)
+           (print (sounddevice.query_devices))
+           (exit 1)]
+          [args.sound_device
+           (setv default-device args.sound_device)]
+          [True
+           (setv default-device (get os.environ "SD_DEVICE"))])
+    (setv args.sound_device (int default-device))
+    (setv sounddevice.default.device args.sound_device))
+  args)
 
 (defmain [&rest argv]
   (print (usage)))

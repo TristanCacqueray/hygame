@@ -46,7 +46,6 @@
       (print "Input status:" status))
     (.put q indata))
   (setv stream (sounddevice.InputStream
-                 :device "default"
                  :channels 1
                  :dtype dtype
                  :samplerate freq
@@ -86,7 +85,6 @@
   (defn finished []
     (print "AudioOut over"))
   (setv stream (sounddevice.RawOutputStream
-                 :device "default"
                  :channels channels
                  :dtype dtype
                  :samplerate freq
