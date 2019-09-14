@@ -69,7 +69,7 @@
           [True (proc band)])))
 
 (defn amp-max [dtype]
-  (cond [(= dtype 'int16) (setv n (** 2 15))]
+  (cond [(= dtype 'int16) (setv n (** 2 16))]
         [True (raise (RuntimeError (.format "Unknown dtype {}" dtype)))])
   (fn [input]
     (/ (np.max input) n)))

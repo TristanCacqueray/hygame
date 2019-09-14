@@ -83,7 +83,7 @@
     (return))
   (setv [x y] size
         mid (// y 2))
-  (setv mono (/ (numpy.mean buffer :axis 1) (** 2 15)))
+  (setv mono (/ (numpy.mean buffer :axis 1) (** 2 16)))
 
   ;; fill background
   (.set_source_rgb context 0 0 0)
