@@ -1,5 +1,5 @@
 #!/bin/env python
-# Copyright 2019 tristanC
+# Copyright 2020 tristanC
 # This file is part of hygame.
 #
 # Hygame is free software: you can redistribute it and/or modify
@@ -21,10 +21,14 @@ setup(
     name="hygame",
     version="0.0.1",
     install_requires=[
+        'Cython',
+        'glumpy',
         'hy',
         'soundfile',
         'sounddevice',
         'numpy',
+        'pyopengl',
+        'pycairo',
         'PyGObject'
     ],
     packages=find_packages(exclude=['tests']),
@@ -33,9 +37,10 @@ setup(
     },
     author="Tristan de Cacqueray",
     author_email="tristanC@wombatt.eu",
-    long_description="Hylang Game Toolkit",
+    long_description=open("README.md").read(),
+    long_description_content_type='text/markdown',
     license="GPL-3",
-    url="https://gitlab.com/TristanCacqueray/hygame",
+    url="https://github.com/TristanCacqueray/hygame",
     platforms=['any'],
     python_requires='>=3.4',
     classifiers=[
