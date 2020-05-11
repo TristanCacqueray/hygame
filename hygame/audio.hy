@@ -103,10 +103,10 @@
           [hygame.cli [usage]])
   (setv args (usage)
         clock (Clock :fps args.fps)
-        read (AudioFile args.wav)
+        read (AudioInput args.wav)
         play (AudioOut :freq (read 'freq) :channels (read 'channels)))
   (setv frame 0)
-  (print "Playing" (get argv 1) "at 25 fps ("
+  (print "Playing" args.wav "at 25 fps ("
          (read 'freq) " Hz - "
          (read 'channels) " channels )")
   (while True
